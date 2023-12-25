@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div class="container-fluid" th:fragment="products">
+    <form action="/cart" method="post">
+        <!-- Iterate over products attribute -->
+        <div th:each="product : ${products}">
+            <h3 th:text="${product.name}">Product Name</h3>
+            <p th:text="${product.description}">Product Description</p>
+            <p th:text="${product.price}">Product Price</p>
+            <button type="submit" name="item[]" class="btn btn-primary btn-sm" th:value="${product.id}">Add to cart</button>
+        </div>
+    </form>
+</div>
+
+</html>
