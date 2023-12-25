@@ -62,8 +62,6 @@ public class IndexController {
         return "index";
     }
 
-
-
     @ModelAttribute("allCategories")
     public Iterable<Category> findAllCategories() {
         return categoryDAO.findAllCategoryByNameAsc();
