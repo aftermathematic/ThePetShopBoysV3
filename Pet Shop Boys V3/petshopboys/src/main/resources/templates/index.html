@@ -20,6 +20,16 @@
 <div class="row">
     <div class="col-xs-12 col-md-3 bg-primary text-white">
         <div th:replace="menu :: categories"></div>
+        <div>--------</div>
+        <div>
+
+
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" value="Logout" />
+            </form>
+
+
+        </div>
     </div>
 
     <div class="col-xs-12 col-md-9">

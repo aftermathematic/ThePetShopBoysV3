@@ -9,13 +9,13 @@ import be.ehb.petshopboys.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
 @Component
 public class DataLoader implements CommandLineRunner {
-
 
     @Autowired
     private UserRepository userRepository;
@@ -32,7 +32,7 @@ public class DataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         clearDatabase();
-        //loadUserData();
+        loadUserData();
         loadCategoryData();
         loadProductData();
 
@@ -57,7 +57,6 @@ public class DataLoader implements CommandLineRunner {
         userRepository.save(user2);
 
     }
-
 
     private void loadCategoryData() {
         Category category1 = new Category();
