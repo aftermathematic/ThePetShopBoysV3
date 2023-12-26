@@ -3,9 +3,8 @@ package be.ehb.petshopboys.config;
 import be.ehb.petshopboys.model.Category;
 import be.ehb.petshopboys.model.Product;
 import be.ehb.petshopboys.model.User;
-import be.ehb.petshopboys.repository.CategoryRepository;
-import be.ehb.petshopboys.repository.ProductRepository;
-import be.ehb.petshopboys.repository.UserRepository;
+import be.ehb.petshopboys.repository.*;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,33 +28,48 @@ public class DataLoader implements CommandLineRunner {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private CartRepository cartRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
+
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+
     @Override
+    @Transactional
     public void run(String... args) throws Exception {
         clearDatabase();
         loadUserData();
         loadCategoryData();
         loadProductData();
-
     }
 
     private void clearDatabase() {
-        productRepository.deleteAll();
-        categoryRepository.deleteAll();
-        userRepository.deleteAll();
+        orderItemRepository.deleteAllInBatch();  // Delete all OrderItem entities first
+        cartRepository.deleteAllInBatch();       // Then all CartItem entities
+        orderRepository.deleteAllInBatch();      // Then Order entities
+        productRepository.deleteAllInBatch();    // Now that OrderItems and CartItems are gone, Products can be deleted
+        categoryRepository.deleteAllInBatch();   // Delete Categories (if not referenced by Products)
+        userRepository.deleteAllInBatch();       // Finally, delete Users (if not referenced by Orders or CartItems)
     }
 
     private void loadUserData() {
+        // Check if the user already exists before saving the new user
+        if (!userRepository.findByEmail("admin@petshopboys.be").isPresent()) {
+            User user1 = new User();
+            user1.setEmail("admin@petshopboys.be");
+            user1.setPassword(passwordEncoder.encode("123456789"));
+            userRepository.save(user1);
+        }
 
-        User user1 = new User();
-        user1.setEmail("admin@petshopboys.be");
-        user1.setPassword(passwordEncoder.encode("123456789"));
-        userRepository.save(user1);
-
-        User user2 = new User();
-        user2.setEmail("jan.vermeerbergen@student.ehb.be");
-        user2.setPassword(passwordEncoder.encode("123456789"));
-        userRepository.save(user2);
-
+        if (!userRepository.findByEmail("jan.vermeerbergen@student.ehb.be").isPresent()) {
+            User user2 = new User();
+            user2.setEmail("jan.vermeerbergen@student.ehb.be");
+            user2.setPassword(passwordEncoder.encode("123456789"));
+            userRepository.save(user2);
+        }
     }
 
     private void loadCategoryData() {

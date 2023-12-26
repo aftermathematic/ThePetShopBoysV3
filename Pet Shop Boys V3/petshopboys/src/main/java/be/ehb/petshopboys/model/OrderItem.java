@@ -92,7 +92,7 @@ public class OrderItem {
                 ", product=" + (product != null ? "Product(id=" + product.getId() + ")" : "null") +
                 ", order=" + (order != null ? "Order(id=" + order.getId() + ")" : "null") +
                 ", quantity=" + quantity +
-                ", totalPrice=" + getTotalPrice() +
+                ", totalPrice=" + (product != null ? getTotalPrice() : "null") +
                 '}';
     }
 }

@@ -31,7 +31,33 @@
 
     <div class="col-xs-12 col-md-6">
 
-        CART
+        <h2>Cart</h2>
+        <table style="border-collapse: collapse; width: 100%;">
+            <thead>
+            <tr>
+                <th style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Product Name</th>
+                <th style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Quantity</th>
+                <th style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Price</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${cartItems}">
+                <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;" th:text="${item.product.name}">Product name</td>
+                <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;" th:text="${item.quantity}">Quantity</td>
+                <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;" th:text="${item.totalPrice}">Price</td>
+            </tr>
+            </tbody>
+        </table>
+        <div>
+            <h4>Total: <span th:text="${totalPrice}">Total price</span></h4>
+        </div>
+        <!-- Add the form for placing an order inside the cart template -->
+        <form action="/cart/place-order" method="post">
+            <!-- You might want to include CSRF token for security reasons -->
+            <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+            <!-- Add a button within the form to submit the order -->
+            <button type="submit" class="btn btn-success">Place Order</button>
+        </form>
 
 
     </div>

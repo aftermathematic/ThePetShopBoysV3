@@ -20,15 +20,15 @@ public class CartItem {
     @NotNull(message = "Product is required.")
     private Product product;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cart_id", nullable = false)
-    @NotNull(message = "ShoppingCart is required.")
-    private ShoppingCart shoppingCart;
-
     @Column(nullable = false)
     @NotNull(message = "Quantity is required.")
     @Min(value = 1, message = "Quantity must be at least 1.")
     private Integer quantity;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    @NotNull(message = "User is required.")
+    private User user;
 
     public CartItem() {
         // Default constructor
@@ -55,16 +55,16 @@ public class CartItem {
         this.product = product;
     }
 
-    public ShoppingCart getShoppingCart() {
-        return shoppingCart;
-    }
-
-    public void setShoppingCart(ShoppingCart shoppingCart) {
-        this.shoppingCart = shoppingCart;
-    }
-
     public Integer getQuantity() {
         return quantity;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void setQuantity(Integer quantity) {
