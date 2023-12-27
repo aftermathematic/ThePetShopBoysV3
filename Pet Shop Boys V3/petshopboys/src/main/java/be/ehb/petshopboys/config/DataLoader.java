@@ -16,11 +16,9 @@ import java.math.BigDecimal;
 @Component
 public class DataLoader implements CommandLineRunner {
 
+    // Inject repositories
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -37,9 +35,14 @@ public class DataLoader implements CommandLineRunner {
     @Autowired
     private OrderItemRepository orderItemRepository;
 
+    // Inject password encoder (for encoding passwords)
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     @Transactional
     public void run(String... args) throws Exception {
+        // Clear database and load data
         clearDatabase();
         loadUserData();
         loadCategoryData();
@@ -47,14 +50,15 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private void clearDatabase() {
-        orderItemRepository.deleteAllInBatch();  // Delete all OrderItem entities first
-        cartRepository.deleteAllInBatch();       // Then all CartItem entities
-        orderRepository.deleteAllInBatch();      // Then Order entities
-        productRepository.deleteAllInBatch();    // Now that OrderItems and CartItems are gone, Products can be deleted
-        categoryRepository.deleteAllInBatch();   // Delete Categories (if not referenced by Products)
-        userRepository.deleteAllInBatch();       // Finally, delete Users (if not referenced by Orders or CartItems)
+        orderItemRepository.deleteAllInBatch();
+        cartRepository.deleteAllInBatch();
+        orderRepository.deleteAllInBatch();
+        productRepository.deleteAllInBatch();
+        categoryRepository.deleteAllInBatch();
+        userRepository.deleteAllInBatch();
     }
 
+    // Load user data
     private void loadUserData() {
         // Check if the user already exists before saving the new user
         if (!userRepository.findByEmail("admin@petshopboys.be").isPresent()) {
@@ -72,6 +76,7 @@ public class DataLoader implements CommandLineRunner {
         }
     }
 
+    // Load category data
     private void loadCategoryData() {
         Category category1 = new Category();
         category1.setId(1L);
@@ -98,15 +103,16 @@ public class DataLoader implements CommandLineRunner {
         categoryRepository.save(category4);
     }
 
-
+    // Load product data
     private void loadProductData() {
 
+        // Get categories by name
         Category category1 = categoryRepository.findByName("Tropical Fish").orElseThrow();
         Category category2 = categoryRepository.findByName("Aquariums").orElseThrow();
         Category category3 = categoryRepository.findByName("Fish Food").orElseThrow();
         Category category4 = categoryRepository.findByName("Other sea creatures").orElseThrow();
 
-        // Dummy description
+        // Dummy description which is used for all products
         String description = "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor " + "incididunt ut labore et dolore magna aliqua";
 
         // Tropical Fish
@@ -288,19 +294,6 @@ public class DataLoader implements CommandLineRunner {
         product4i.setImage("https://i.ibb.co/fdqb3bY/turtle.png");
         product4i.setCategory(category4);
         productRepository.save(product4i);
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     }

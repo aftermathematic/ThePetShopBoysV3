@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+
+// This is the repository for the orders. It extends JpaRepository, which contains methods for basic CRUD operations.
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
     @EntityGraph(attributePaths = "orderItems")

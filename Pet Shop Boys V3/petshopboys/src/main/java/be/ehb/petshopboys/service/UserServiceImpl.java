@@ -2,12 +2,8 @@ package be.ehb.petshopboys.service;
 
 import be.ehb.petshopboys.model.User;
 import be.ehb.petshopboys.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,25 +21,21 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    // This method is used by Spring Security to authenticate users
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        //User userEntity = userRepository.findByEmail(email);
+        // Get the user with the given email or throw an exception if it doesn't exist
         User userEntity = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
         if (userEntity == null) {
             throw new UsernameNotFoundException("User not found with email: " + email);
         }
 
-        return new org.springframework.security.core.userdetails.User(
-                userEntity.getEmail(),
-                userEntity.getPassword(),
-                Collections.emptyList()
-        );
+        return new org.springframework.security.core.userdetails.User(userEntity.getEmail(), userEntity.getPassword(), Collections.emptyList());
     }
 
     @Override
     public void saveUser(User userEntity) {
-        //userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
         userRepository.save(userEntity);
     }
 }

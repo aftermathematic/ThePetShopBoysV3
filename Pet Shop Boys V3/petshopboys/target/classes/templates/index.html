@@ -36,6 +36,11 @@
 
             <div th:replace="menu :: categories"></div>
             <div>
+                <form th:action="@{/cart}" method="post">
+                    <button type="submit" name="cart" class="btn btn-outline-light" style="margin-left:10px; margin-top:20px">View Cart</button>
+                </form>
+            </div>
+            <div>
                 <form th:action="@{/logout}" method="post">
                     <button type="submit" name="logout" class="btn btn-outline-light" style="margin-left:10px; margin-top:20px">Logout</button>
                 </form>

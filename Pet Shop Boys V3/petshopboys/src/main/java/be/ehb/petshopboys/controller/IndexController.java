@@ -4,23 +4,15 @@ import be.ehb.petshopboys.dao.CategoryDAO;
 import be.ehb.petshopboys.dao.ProductDAO;
 import be.ehb.petshopboys.model.Category;
 import be.ehb.petshopboys.model.Product;
-import be.ehb.petshopboys.model.User;
 import be.ehb.petshopboys.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.context.request.RequestContextHolder;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 
 @Controller
@@ -30,8 +22,7 @@ public class IndexController {
     private final CategoryDAO categoryDAO;
     private final UserService userService;
 
-    private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
-
+    // Constructor injection
     @Autowired
     public IndexController(ProductDAO productDAO, CategoryDAO categoryDAO, UserService userService) {
         this.productDAO = productDAO;
@@ -41,7 +32,6 @@ public class IndexController {
 
     @GetMapping({"/", "/cat/{id}"})
     public String showProductsByCategory(@PathVariable(required = false) Integer id, Model model) {
-        logger.info("main mapping called");
 
         // Check if user is authenticated
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -62,12 +52,10 @@ public class IndexController {
         return "index";
     }
 
+    // ModelAttribute for displaying the categories in the navbar
     @ModelAttribute("allCategories")
     public Iterable<Category> findAllCategories() {
         return categoryDAO.findAllCategoryByIdAsc();
     }
-
-
-
 
 }

@@ -12,11 +12,14 @@ import java.util.Objects;
 public class CartItem {
 
     @Id
+    // This auto-increments the id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    // This is a many-to-one relationship. A product can be in multiple cart items, but a cart item can only have one product.
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
+    // This is a required field
     @NotNull(message = "Product is required.")
     private Product product;
 
@@ -34,6 +37,7 @@ public class CartItem {
         // Default constructor
     }
 
+    // This constructor is used when creating a new cart item
     public CartItem(Product product, Integer quantity) {
         this.product = product;
         this.quantity = quantity;
@@ -71,6 +75,7 @@ public class CartItem {
         this.quantity = quantity;
     }
 
+    // This method calculates the total price of the cart item (price * quantity)
     public BigDecimal getTotalPrice() {
         if (product != null && product.getPrice() != null) {
             return product.getPrice().multiply(BigDecimal.valueOf(quantity));
@@ -79,6 +84,7 @@ public class CartItem {
         }
     }
 
+    // Standard equals, hashCode and toString method overrides
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
