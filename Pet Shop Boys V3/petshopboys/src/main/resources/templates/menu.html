@@ -7,7 +7,7 @@
     <ul class="navbar-nav">
 
         <li class="nav-item">
-            <a class="nav-link" href="/">All</a>
+            <a class="nav-link" href="/">All Products</a>
         </li>
         <li class="nav-item" th:each="index : ${allCategories}">
             <a class="nav-link" href="#" th:text="${index.name}" th:href="@{~/cat/{id}(id=${index.id})}">Link</a>

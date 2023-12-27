@@ -5,13 +5,44 @@
     <form action="/cart/add" method="post">
         <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
         <!-- Iterate over products attribute -->
-        <div th:each="product : ${products}">
-            <h3 th:text="${product.name}">Product Name</h3>
-            <p th:text="${product.description}">Product Description</p>
-            <p th:text="${product.price}">Product Price</p>
-            <button type="submit" name="productId" class="btn btn-primary btn-sm" th:value="${product.id}">Add to cart</button>
+
+        <div class="container mt-4" th:fragment="products">
+
+            <!-- Start the Bootstrap row outside your form to allow cards to align correctly in a grid -->
+            <div class="row">
+
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+
+                <!-- Iterate over products attribute -->
+                <div th:each="product : ${products}" class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="row g-0">
+                            <!-- Image Column -->
+                            <div class="col-md-4">
+                                <img class="img-fluid rounded-start" alt="Product Image" th:src="${product.image}" />
+                            </div>
+                            <!-- Content Column -->
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title" th:text="${product.name}">Product Name</h5>
+                                    <p class="card-text" th:text="${product.description}">Product Description</p>
+                                    <p class="card-text"><strong>Price:</strong> <span th:text="${product.price}">Product Price</span></p>
+                                </div>
+                                <div class="card-footer">
+                                    <button type="submit" name="productId" class="btn btn-primary" th:value="${product.id}">Add to cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            </div>
         </div>
     </form>
 </div>
+
 
 </html>
