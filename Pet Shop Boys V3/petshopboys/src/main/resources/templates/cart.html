@@ -64,6 +64,7 @@
                         <th style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Product Name</th>
                         <th style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Quantity</th>
                         <th style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Price</th>
+                        <th style="border: 1px solid #dddddd; text-align: left; padding: 8px;">&nbsp;</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -71,6 +72,14 @@
                         <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;" th:text="${item.product.name}">Product name</td>
                         <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;" th:text="${item.quantity}">Quantity</td>
                         <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;" th:text="${item.totalPrice}">Price</td>
+                        <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">
+
+                            <form action="/cart/remove" method="post" th:id="${item.product.id}">
+                                <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                                <button type="submit" name="productId" class="btn btn-danger" th:value="${item.product.id}">Remove</button>
+                            </form>
+
+                        </td>
                     </tr>
                     </tbody>
                 </table>

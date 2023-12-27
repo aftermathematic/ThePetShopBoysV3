@@ -11,7 +11,7 @@
             <!-- Start the Bootstrap row outside your form to allow cards to align correctly in a grid -->
             <div class="row">
 
-                    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
 
                 <!-- Iterate over products attribute -->
                 <div th:each="product : ${products}" class="col-md-4 mb-4">
@@ -35,9 +35,6 @@
                         </div>
                     </div>
                 </div>
-
-
-
 
             </div>
         </div>

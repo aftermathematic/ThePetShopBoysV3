@@ -85,6 +85,32 @@ public class CartController {
         return "redirect:/cart";
     }
 
+    // Endpoint for adding a product to the cart
+    @PostMapping("/cart/remove")
+    public String removeFromCart(@RequestParam("productId") Integer productId, ModelMap map) {
+
+        // Get the currently logged in user
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+
+        // Find the user by email
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+
+        // Find the product by its ID
+        Product product = productRepository.findById(productId).orElseThrow(() -> new IllegalArgumentException("Invalid product Id: " + productId));
+
+        // Find the cart item by product and user. Check if it already exists in the cart
+        Optional<CartItem> existingCartItem = cartRepository.findByProductAndUser(product, user);
+
+        // If the cart item exists, remove it
+        if (existingCartItem.isPresent()) {
+            CartItem cartItem = existingCartItem.get();
+            cartRepository.delete(cartItem);
+        }
+
+        return "redirect:/cart";
+    }
+
     // Endpoint for displaying the cart
     @GetMapping("/cart")
     public String displayCart(ModelMap map) {
